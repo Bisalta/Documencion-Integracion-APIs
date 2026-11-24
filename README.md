@@ -13,6 +13,8 @@
 6. [Ambiente de Pruebas](#-ambiente-de-pruebas)
 7. [Seguridad](#seguridad)
 8. [Lista de verificación para el proveedor](#lista-de-verificación-para-el-proveedor)
+9. [Autor](#autor)
+10. [Bitácora de Documentación](#bitácora-de-documentación)
 
 ## Introducción
 
@@ -305,14 +307,16 @@ Esto es una propuesta de trabajo desarrollada por CONSTRUPLAZA S.A
 <img src="Documentacion/construplaza_logo.png" alt="Logo Construplaza" width="200"/>
 
 
-# Bitacora de Documentación
+## Bitácora de Documentación
 
-- 2024-08-12 - Andrei Calderón Molina - Creación de la documentación necesaria para el proyecto de Api´s
+- 2024-08-12 - Andrei Calderón Molina - Creación de la documentación necesaria para el proyecto de APIs
 
 - 2024-08-16 - Andrei Calderón Molina - Revisión y ajuste de documentación
 
 - 2024-10-11 - Andrei Calderón Molina - Agregación del endpoint necesario para la consulta de facturación
 
 - 2024-11-05 - Andrei Calderón Molina - Agregación de ajuste de seguridad, lista blanca de ip
+
+- 2026-11-24 - Andrei Calderón Molina - Corrección de ejemplos JSON, catálogo de errores, ortografía e índice
 
 - 2026-11-24 - Erick Abarca - Actualización a la integración actual: se quita la Fase 3; se agregan unidad de venta, empaque y bodega en la Fase 1; consulta del pedido por orden de compra, estados y varias facturas por pedido en la Fase 2; regla de reintentos por código HTTP; requisitos del ambiente de pruebas y lista de verificación
