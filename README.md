@@ -17,7 +17,10 @@
    - [Fase 3 - Consultar Productos de Pedido Especial](#-fase-3---consultar-productos-de-pedido-especial)
 6. [Flujo de Trabajo General para Nuestra Implementación](#flujo-de-trabajo-general-para-nuestra-implementación)
 7. [Ambiente de Pruebas](#-ambiente-de-pruebas)
-8. [Ejemplos de Integraciones formato API - Fase 1](#-ejemplos-de-integraciones-formato-api---fase-1)
+8. [Seguridad IP](#seguridad-ip)
+9. [Ejemplos de Integraciones formato API - Fase 1](#-ejemplos-de-integraciones-formato-api---fase-1)
+10. [Autor](#autor)
+11. [Bitácora de Documentación](#bitácora-de-documentación)
 
 ## Introducción
 
@@ -43,15 +46,15 @@ Construplaza está buscando establecer una integración API con nuestros proveed
 - **Procesamiento:** Asegurar que la información se muestre en tiempo real, es decir, cuando se consulte la API, se obtenga la información real sobre el stock.
 - **Envío de Pedidos:** Garantizar una correcta conexión entre el stock validado y el stock del endpoint de la fase 1.
 - **Obtención del Catálogo Completo:** Obtener toda la información adicional de los artículos.
-- **Habilitar espacio de desarrollo :** Garantizar un espacio de desarrollo para realizar todas las pruebas necesarias.
-- **Desplegar a producción :** Después de completar las pruebas en el entorno de desarrollo, proceder al despliegue en producción, asegurando la obtención de todas las credenciales necesarias y que los cambios se implementen de manera segura y sin interrupciones.
+- **Habilitar espacio de desarrollo:** Garantizar un espacio de desarrollo para realizar todas las pruebas necesarias.
+- **Desplegar a producción:** Después de completar las pruebas en el entorno de desarrollo, proceder al despliegue en producción, asegurando la obtención de todas las credenciales necesarias y que los cambios se implementen de manera segura y sin interrupciones.
 
 ## Requisitos del Proyecto
 
 ### Requisitos Funcionales
 
 - Establecer una conexión segura con la API del proveedor.
-- Ejecutar metodos de HTTP para obtener o enviar todos los datos necesarios.
+- Ejecutar métodos de HTTP para obtener o enviar todos los datos necesarios.
 
 ### Requisitos No Funcionales
 
@@ -69,22 +72,22 @@ Implementar una funcionalidad que permita consultar la API del proveedor en tiem
 **Datos Requeridos:**
 
 
-  | Parametro                           | Tipo      | Ejemplo              |
-  | :---------------------------------- | :-------- | :------------------- |
-  | `Sku (Codigo artículo)`             | `string`  | `"PRU01"`            |
-  | `Impuestos`                         | `string`  | `"13%"`o `"IVA 13%"` |
-  | `Bodega`                            | `string`  | `"1"`                |
-  | `Cantidad`                          | `int`     | `0,1,20`             |
-  | `Precio`                            | `decimal` | `21843.00`           |
-  | `Descuentos`                        | `string`  | `"0%"`               |
-  | `Inactivo`                          | `boolean` | `false o true`       |
-  | `Moneda (en caso de ser necesario)` | `string`  | `"USD" o "CRC" `     |
+  | Parámetro                           | Tipo      | Ejemplo                  |
+  | :---------------------------------- | :-------- | :----------------------- |
+  | `Sku (Código artículo)`             | `string`  | `"PRU01"`                |
+  | `Impuestos`                         | `string`  | `"13%"` o `"IVA 13%"`    |
+  | `Bodega`                            | `string`  | `"1"`                    |
+  | `Cantidad`                          | `int`     | `0`, `1`, `20`           |
+  | `Precio`                            | `decimal` | `21843.00`               |
+  | `Descuentos`                        | `string`  | `"0%"`                   |
+  | `Inactivo`                          | `boolean` | `false` o `true`         |
+  | `Moneda (en caso de ser necesario)` | `string`  | `"USD"` o `"CRC"`        |
 
 
 **Alcance:**
 Configurar la conexión a la API, implementar solicitudes GET para obtener los datos necesarios, procesar estos datos y presentarlos en la página web de manera precisa y en tiempo real.
 
-**Descripcicón grafica:**
+**Descripción gráfica:**
 
 ![Fase 1 - Descripción](Documentacion/fase1.png)
 
@@ -98,7 +101,7 @@ Integrar la funcionalidad para cargar y gestionar pedidos directamente a través
 
 #### Ejemplo
 
-  | Parametro       | Tipo     | Descripción                  |
+  | Parámetro       | Tipo     | Descripción                  |
   | :-------------- | :------- | :--------------------------- |
   | `idOrden`       | `string` | **Requerido**                |
   | `fechaCreacion` | `string` | Fecha de creación del pedido |
@@ -107,15 +110,20 @@ Integrar la funcionalidad para cargar y gestionar pedidos directamente a través
 - **Detalles del Producto:** Listado de productos incluidos en el pedido, especificando ID y cantidad.
 
 #### Ejemplo de Cuerpo de Solicitud para la API
+
+El ejemplo muestra solo el listado de productos. El `idOrden` y la `fechaCreacion` acompañan a este listado, ya sea en la ruta del endpoint o en el cuerpo de la solicitud, según lo defina la API del proveedor.
+
 ```json
+[
     {
         "Sku": "ArticuloPrueba1",
-        "Quantity": 2,
+        "Quantity": 2
     },
     {
-         "Sku": "ArticuloPrueba1",
-         "Quantity": 1,
+        "Sku": "ArticuloPrueba2",
+        "Quantity": 1
     }
+]
 ```
 - **Instrucciones Especiales:** Cualquier instrucción especial relacionada con la entrega o manejo del pedido (de ser necesario).
 
@@ -127,41 +135,40 @@ Integrar la funcionalidad para cargar y gestionar pedidos directamente a través
 
 #### Formato de Respuesta en Caso de Error
 ```json
-   {
+{
     "Message": "Stock disponible insuficiente para agregar SKU al pedido.",
-    "ErrorCode": 23,
-   }
+    "ErrorCode": 23
+}
 ```
 
 #### Catálogo de Errores Comunes de la API
 
-| Error codigo | Mensaje                                                                                                                    |
-| ------------ | -------------------------------------------------------------------------------------------------------------------------- |
-| `1`          | No se envio un parametro requerido.                                                                                        |
-| `23`         | Stock disponible insuficiente para agregar SKU al pedido.                                                                  |
-| `26`         | TSe solicitan demasiados productos. El número máximo de productos permitidos es.                                           |
-| `27`         | No se puede agregar un producto a un pedido. Este se encuentra desactivado                                                 |
-| `28`         | Producto de pedido no autorizado. Por favor consulta el catálogo de productos autorizados.                                 |
-| `29`         | Lista de productos vacía.                                                                                                  |
-| `30`         | Invalid order.                                                                                                             |
-| `31`         | Se ha especificado un pedido no válido. Asegúrese de que el pedido tenga el formato correcto en el cuerpo de la solicitud. |
-| `31`         | Se ha especificado un pedido no válido. Asegúrese de que el pedido tenga el formato correcto en el cuerpo de la solicitud. |
-| `33`         | Se ha especificado un pedido no válido. Asegúrese de que el pedido tenga el formato correcto en el cuerpo de la solicitud. |
+| Código de error | Mensaje                                                                                                                    |
+| --------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `1`             | No se envió un parámetro requerido.                                                                                        |
+| `23`            | Stock disponible insuficiente para agregar SKU al pedido.                                                                  |
+| `26`            | Se solicitan demasiados productos. Se excedió el número máximo de productos permitidos por pedido.                         |
+| `27`            | No se puede agregar un producto a un pedido. Este se encuentra desactivado.                                                |
+| `28`            | Producto de pedido no autorizado. Por favor consulta el catálogo de productos autorizados.                                 |
+| `29`            | Lista de productos vacía.                                                                                                  |
+| `30`            | Pedido inválido.                                                                                                           |
+| `31`            | Se ha especificado un pedido no válido. Asegúrese de que el pedido tenga el formato correcto en el cuerpo de la solicitud. |
+| `33`            | Se ha especificado un pedido no válido. Asegúrese de que el pedido tenga el formato correcto en el cuerpo de la solicitud. |
 
 
 **Alcance:**
 Configurar la conexión a la API, implementar solicitudes POST para enviar los datos de los pedidos u órdenes, manejar confirmaciones y errores, y presentar el estado del pedido u orden en nuestro sistema interno.
 
-**Descripcicón grafica:**
+**Descripción gráfica:**
 
 ![Fase 2 - Descripción](Documentacion/fase2.png)
 
 
-**Formato de Logs Deseables en la Respuesta**
+**Formato de Respuesta Deseado al Crear el Pedido**
 
 ```json
 {
-    "OrderNumber": "1020192", -- Numero de orden del proveedor
+    "OrderNumber": "1020192",
     "OrderDate": "2024-08-08T00:00:00",
     "Customer": {
         "CustomerId": "012",
@@ -175,9 +182,14 @@ Configurar la conexión a la API, implementar solicitudes POST para enviar los d
             "Name": "Costa Rica"
         }
     },
-    "CustomerOrderNumber": "PRPRE09" -- Nuestro numero de orden
+    "CustomerOrderNumber": "PRPRE09"
 }
 ```
+
+| Campo                 | Descripción                         |
+| :-------------------- | :---------------------------------- |
+| `OrderNumber`         | Número de orden del proveedor.      |
+| `CustomerOrderNumber` | Nuestro número de orden de compra.  |
 
 #### 2.1 - Obtener Factura
 
@@ -209,10 +221,10 @@ Es importante destacar que la facturación no es un proceso inmediato. Por lo ta
 }
 ```
 
-#### Ejemplo de respueta de la API sin factura
+#### Ejemplo de respuesta de la API sin factura
 ```json
 {
-    "facturapedido": "No exite factura",
+    "facturapedido": "No existe factura",
     "existe": false,
     "articulos": []
 }
@@ -229,8 +241,8 @@ Es importante destacar que la facturación no es un proceso inmediato. Por lo ta
 Habilitar consultas para productos que no se manejan regularmente en nuestro inventario y que requieren pedidos especiales, obteniendo y almacenando información detallada sobre estos artículos.
 
 **Datos Requeridos:**
-- Sku 
-- Descripción del articulo
+- Sku
+- Descripción del artículo
 - Descripción del Fabricante
 - Fotos
 - Categorías
@@ -267,7 +279,7 @@ Implementar medidas de seguridad y configuración de accesos adecuados.
 
 Habilitar este entorno hasta finalizar todas las pruebas respectivas.
 
-## Seguridad IP 
+## Seguridad IP
 
 Para asegurar un acceso seguro y controlado entre ambos desarrollos, recomendamos implementar una lista blanca de IPs, limitando las invocaciones a las direcciones IP específicas que proveemos. Esta medida permitirá a su equipo restringir el acceso únicamente a fuentes confiables, mejorando la protección general del sistema.
 
@@ -307,10 +319,11 @@ Para asegurar un acceso seguro y controlado entre ambos desarrollos, recomendamo
 
 ## 💡 Ejemplos de Integraciones formato API - Fase 1
 
-### Información en un mismo Endpoints
+### Información en un mismo endpoint
 
 ```json
- {
+[
+    {
         "idProducto": "PRUEBA01",
         "nombrearticulo": "ARTICULO PRUEBA",
         "impuesto": "IVA 13%",
@@ -319,7 +332,7 @@ Para asegurar un acceso seguro y controlado entre ambos desarrollos, recomendamo
         "price": 3239.00,
         "descuento": "0%",
         "inactivo": false,
-        "moneda" : "CRC"
+        "moneda": "CRC"
     },
     {
         "idProducto": "PRUEBA02",
@@ -330,16 +343,18 @@ Para asegurar un acceso seguro y controlado entre ambos desarrollos, recomendamo
         "price": 5039.00,
         "descuento": "0%",
         "inactivo": false,
-        "moneda" : "CRC"
+        "moneda": "CRC"
     }
+]
 ```
 
 
-### Información en diferentes Endpoints
-#### Endpoint catálogo
+### Información en diferentes endpoints
+#### Endpoint de catálogo
 
 ```json
-{
+[
+    {
         "Sku": "ArticuloPrueba1",
         "Description": "Cable potencia 1",
         "Type": "Physical",
@@ -363,8 +378,8 @@ Para asegurar un acceso seguro y controlado entre ambos desarrollos, recomendamo
                 }
             ]
         }
-     },
-     {
+    },
+    {
         "Sku": "ArticuloPrueba2",
         "Description": "Cable potencia 2",
         "Type": "Physical",
@@ -389,41 +404,45 @@ Para asegurar un acceso seguro y controlado entre ambos desarrollos, recomendamo
             ]
         }
     }
+]
 ```
 
 #### Endpoint de precios
 
 ```json
+[
     {
         "Sku": "ArticuloPrueba1",
         "Price": {
-            "CurrencyId": "US",
+            "CurrencyId": "USD",
             "UnitPrice": 5.6598
         }
     },
     {
         "Sku": "ArticuloPrueba2",
         "Price": {
-            "CurrencyId": "US",
+            "CurrencyId": "USD",
             "UnitPrice": 174.2268
         }
     }
-
+]
 ```
 
-#### EndPoint stock
+#### Endpoint de stock
 
 ```json
-   {
+[
+    {
         "Sku": "ArticuloPrueba1",
         "InStock": 10
     },
     {
         "Sku": "ArticuloPrueba2",
         "InStock": 10
-    },
-
+    }
+]
 ```
+
 ## Autor
 
 Esto es una propuesta de trabajo desarrollada por CONSTRUPLAZA S.A
@@ -431,12 +450,14 @@ Esto es una propuesta de trabajo desarrollada por CONSTRUPLAZA S.A
 <img src="Documentacion/construplaza_logo.png" alt="Logo Construplaza" width="200"/>
 
 
-# Bitacora de Documentación
+## Bitácora de Documentación
 
-- 2024-08-12 - Andrei Calderón Molina - Creación de la documentación necesaria para el proyecto de Api´s
+- 2024-08-12 - Andrei Calderón Molina - Creación de la documentación necesaria para el proyecto de APIs
 
 - 2024-08-16 - Andrei Calderón Molina - Revisión y ajuste de documentación
   
 - 2024-10-11 - Andrei Calderón Molina - Agregación del endpoint necesario para la consulta de facturación
 
 - 2024-11-05 - Andrei Calderón Molina - Agregación de ajuste de seguridad, lista blanca de ip
+
+- 2026-11-24 - Andrei Calderón Molina - Corrección de ejemplos JSON, catálogo de errores, ortografía e índice
